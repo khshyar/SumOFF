@@ -1,1 +1,1 @@
-print("Hello World! this is the 'taghir' you wanted")
+print("Salam o 100 salam")
