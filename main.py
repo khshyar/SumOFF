@@ -1,1 +1,1 @@
-print("Salam o 100 salam")
+print("Salam o 100 salam zahre mar")
