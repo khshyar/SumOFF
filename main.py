@@ -16,7 +16,9 @@ if user_input == "y":
         if user_item == "stop":
             break
         wishlist.add_item(user_item)
-
+        # quantity = input("Do you want to remove item? (Y/N)").lower()
+        # if quantity == "y":
+        #     wishlist.minus_quantity(user_item)
     wishlist.view_list()
 
     export_format = input(
