@@ -1,10 +1,13 @@
+from .db.mysql_python_connector import my_cursor
 import tkinter as tk
+import sys
+sys.path.append('/E:/Coding/VSCode/SumOFF/SumOFF/db')
 
 root = tk.Tk()
 root.title("Create a new user!")
 
 
-#COMMANDS 
+# COMMANDS
 
 def get_user():
 
@@ -13,14 +16,17 @@ def get_user():
     password = entry_password.get()
     rep_pass = entry_rep_pass.get()
 
+    my_cursor.execute(
+        f"INSERT INTO user ('email','username','password') VALUES ({email},{username},{password})")
+
     entry_username.delete(0, "end")
     entry_email.delete(0, "end")
     entry_password.delete(0, "end")
     entry_rep_pass.delete(0, "end")
 
 
-labels_frame = tk.Frame(master=root) 
-username_lbl = tk.Label(master=labels_frame ,text="Username:")
+labels_frame = tk.Frame(master=root)
+username_lbl = tk.Label(master=labels_frame, text="Username:")
 email_lbl = tk.Label(master=labels_frame, text="Email Address:")
 password_lbl = tk.Label(master=labels_frame, text="Password:")
 rep_pass_lbl = tk.Label(master=labels_frame, text="Repeat Password:")
@@ -32,7 +38,7 @@ email_lbl.grid(column=0, row=1, sticky="W", pady=5)
 password_lbl.grid(column=0, row=2, sticky="W", pady=5)
 rep_pass_lbl.grid(column=0, row=3, sticky="W", pady=5)
 
-#ENTRY
+# ENTRY
 
 entry_frame = tk.Frame(master=root)
 
@@ -48,12 +54,11 @@ entry_email.grid(column=0, row=1, sticky="W", pady=5)
 entry_password.grid(column=0, row=2, sticky="W", pady=5)
 entry_rep_pass.grid(column=0, row=3, sticky="SW", pady=5)
 
-#Button
+# Button
 
 sign_btn = tk.Button(text="Sign up!", command=get_user)
 
 sign_btn.grid(column=0, row=2, columnspan=2, pady=5)
-
 
 
 root.mainloop()
