@@ -1,7 +1,7 @@
-from .db.mysql_python_connector import my_cursor
 import tkinter as tk
-import sys
-sys.path.append('/E:/Coding/VSCode/SumOFF/SumOFF/db')
+# import sys
+# sys.path.append('/E:/Coding/VSCode/SumOFF/SumOFF/db')
+from db.mysql_python_connector import push_db
 
 root = tk.Tk()
 root.title("Create a new user!")
@@ -16,8 +16,7 @@ def get_user():
     password = entry_password.get()
     rep_pass = entry_rep_pass.get()
 
-    my_cursor.execute(
-        f"INSERT INTO user ('email','username','password') VALUES ({email},{username},{password})")
+    push_db(email, username, password)
 
     entry_username.delete(0, "end")
     entry_email.delete(0, "end")

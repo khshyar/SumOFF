@@ -3,14 +3,15 @@ import mysql.connector
 conn = mysql.connector.connect(
     host='localhost', username='root', password='SumOFF180424!', database='sumoff')
 
-my_cursor = conn.cursor()
+def push_db(email,username_data,password_data):
+    my_cursor = conn.cursor()
 
-my_cursor.execute("CREATE TABLE user (userid INTEGER(10))")
+    my_cursor.execute(
+        "INSERT INTO user (`email`, `username`, `password`) VALUES (%s, %s, %s)",
+        (email, username_data, password_data)
+    )
 
-# for db in my_cursor:
-#     print(db)
+    conn.commit()
+    conn.close()
 
-# conn.commit()
-# conn.close()
-
-print("Connection successfully created")
+    print("Connection successfully created")
