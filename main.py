@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-print("Salam o 100 salam zahre mar")
-print("testing git skills")
-=======
 from user_list import UserWishList
 
 print("Welcome to SumOff")
@@ -33,4 +29,3 @@ if user_input == "y":
         print("No export performed.")
 else:
     print("Wish list creation was cancelled.")
->>>>>>> Khashy
