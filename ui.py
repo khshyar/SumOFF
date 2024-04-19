@@ -1,63 +1,78 @@
 import tkinter as tk
-# import sys
-# sys.path.append('/E:/Coding/VSCode/SumOFF/SumOFF/db')
+from tkinter import ttk, font
 from db.mysql_python_connector import push_db
 
-root = tk.Tk()
-root.title("Create a new user!")
+class CreateUser:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Create a new user!")
+        self.root.geometry("250x180")
+        self.ui_setup()
 
 
 # COMMANDS
 
-def get_user():
+    def get_user(self):
 
-    username = entry_username.get()
-    email = entry_email.get()
-    password = entry_password.get()
-    rep_pass = entry_rep_pass.get()
+        username = self.entry_username.get()
+        email = self.entry_email.get()
+        password = self.entry_password.get()
+        rep_pass = self.entry_rep_pass.get()
 
-    push_db(email, username, password)
+        push_db(email, username, password)
 
-    entry_username.delete(0, "end")
-    entry_email.delete(0, "end")
-    entry_password.delete(0, "end")
-    entry_rep_pass.delete(0, "end")
+        self.clear_entires()
 
-
-labels_frame = tk.Frame(master=root)
-username_lbl = tk.Label(master=labels_frame, text="Username:")
-email_lbl = tk.Label(master=labels_frame, text="Email Address:")
-password_lbl = tk.Label(master=labels_frame, text="Password:")
-rep_pass_lbl = tk.Label(master=labels_frame, text="Repeat Password:")
-
-labels_frame.grid(column=0, row=0, padx=5, pady=5)
-
-username_lbl.grid(column=0, row=0, sticky="W", pady=5)
-email_lbl.grid(column=0, row=1, sticky="W", pady=5)
-password_lbl.grid(column=0, row=2, sticky="W", pady=5)
-rep_pass_lbl.grid(column=0, row=3, sticky="W", pady=5)
-
-# ENTRY
-
-entry_frame = tk.Frame(master=root)
-
-entry_frame.grid(column=1, row=0, padx=5, pady=5)
-
-entry_username = tk.Entry(master=entry_frame)
-entry_email = tk.Entry(master=entry_frame)
-entry_password = tk.Entry(master=entry_frame)
-entry_rep_pass = tk.Entry(master=entry_frame)
-
-entry_username.grid(column=0, row=0, sticky="W", pady=5)
-entry_email.grid(column=0, row=1, sticky="W", pady=5)
-entry_password.grid(column=0, row=2, sticky="W", pady=5)
-entry_rep_pass.grid(column=0, row=3, sticky="SW", pady=5)
-
-# Button
-
-sign_btn = tk.Button(text="Sign up!", command=get_user)
-
-sign_btn.grid(column=0, row=2, columnspan=2, pady=5)
+        
 
 
-root.mainloop()
+    def clear_entires(self):
+
+        self.entry_username.delete(0, "end")
+        self.entry_email.delete(0, "end")
+        self.entry_password.delete(0, "end")
+        self.entry_rep_pass.delete(0, "end")
+
+
+    def ui_setup(self):
+        labels_frame = ttk.Frame(master=self.root)
+        username_lbl = ttk.Label(master=labels_frame, text="Username:")
+        email_lbl = ttk.Label(master=labels_frame, text="Email Address:")
+        password_lbl = ttk.Label(master=labels_frame, text="Password:")
+        rep_pass_lbl = ttk.Label(master=labels_frame, text="Repeat Password:")
+
+        labels_frame.grid(column=0, row=0, padx=5, pady=5)
+
+        username_lbl.grid(column=0, row=0, sticky="W", pady=5)
+        email_lbl.grid(column=0, row=1, sticky="W", pady=5)
+        password_lbl.grid(column=0, row=2, sticky="W", pady=5)
+        rep_pass_lbl.grid(column=0, row=3, sticky="W", pady=5)
+
+        # ENTRY
+
+        entry_frame = ttk.Frame(master=self.root)
+
+        entry_frame.grid(column=1, row=0, padx=5, pady=5)
+
+        self.entry_username = ttk.Entry(master=entry_frame)
+        self.entry_username.focus()
+        self.entry_email = ttk.Entry(master=entry_frame)
+        self.entry_password = ttk.Entry(master=entry_frame)
+        self.entry_rep_pass = ttk.Entry(master=entry_frame)
+
+        self.entry_username.grid(column=0, row=0, sticky="W", pady=5)
+        self.entry_email.grid(column=0, row=1, sticky="W", pady=5)
+        self.entry_password.grid(column=0, row=2, sticky="W", pady=5)
+        self.entry_rep_pass.grid(column=0, row=3, sticky="W", pady=5)
+
+        # Button
+
+        sign_btn = ttk.Button(text="Sign up!", command=self.get_user)
+
+        sign_btn.grid(column=0, row=2, columnspan=2, pady=5)
+
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = CreateUser(root)
+    root.mainloop()
