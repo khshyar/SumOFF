@@ -8,7 +8,7 @@ class SqlPy:
 
 
     def push_db(self, email, username_data, password_data):
-        
+
         try:
             my_cursor = self.conn.cursor()
 
@@ -18,7 +18,7 @@ class SqlPy:
             )
 
             self.conn.commit()
-            print("User inserted successfully")
+            print("User inserted successfully") 
         except mysql.connector.Error as err:
             print(f"Error: {err}")
         finally:
@@ -26,3 +26,12 @@ class SqlPy:
             my_cursor.close()
 
         print("Connection successfully created")
+    
+    def close_connection(self):
+        if self.conn:
+            self.conn.close()
+            print("Connection closed")
+
+    def __del__(self):
+        # Close connection when the object is deleted
+        self.close_connection()
