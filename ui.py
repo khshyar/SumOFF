@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, font
-from db.mysql_python_connector import push_db
+from db.mysql_python_connector import SqlPy
 
 class CreateUser:
     def __init__(self, root):
@@ -19,7 +19,7 @@ class CreateUser:
         password = self.entry_password.get()
         rep_pass = self.entry_rep_pass.get()
 
-        push_db(email, username, password)
+        SqlPy.push_db(email, username, password)
 
         self.clear_entires()
 
