@@ -7,6 +7,7 @@ class CreateUser:
         self.root = root
         self.root.title("Create a new user!")
         self.root.geometry("250x180")
+        self.sql = SqlPy()
         self.ui_setup()
 
 
@@ -19,7 +20,7 @@ class CreateUser:
         password = self.entry_password.get()
         rep_pass = self.entry_rep_pass.get()
 
-        SqlPy.push_db(email, username, password)
+        self.sql.push_db(email, username, password)
 
         self.clear_entires()
 
