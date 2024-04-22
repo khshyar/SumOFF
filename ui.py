@@ -56,11 +56,6 @@ class CreateUser:
 
     def get_user(self):
 
-        self.username = self.entry_username.get().lower()
-        self.email = self.entry_email.get()
-        self.password = self.entry_password.get()
-        self.rep_pass = self.entry_rep_pass.get()
-
         sql = SqlPy()
 
         if self.check_validation():
@@ -68,7 +63,26 @@ class CreateUser:
             sql.push_db(self.email, self.username, self.password)
 
             self.clear_entires()
+    
 
+    def enable_button(self):
+        # Get the current values from the entry fields
+        self.username = self.entry_username.get()
+        self.email = self.entry_email.get()
+        self.password = self.entry_password.get()
+        self.rep_pass = self.entry_rep_pass.get()
+        
+        # Check if all conditions are met to enable the button
+        if (len(self.password) > 7 and 
+            len(self.rep_pass) > 7 and 
+            len(self.username) > 7 and 
+            len(self.email) > 7):
+            self.sign_btn.config(state="normal")
+        else:
+            self.sign_btn.config(state="disabled")
+        
+        # Schedule the enable_button method to run again after 100 milliseconds
+        self.root.after(100, self.enable_button)
 
     def clear_entires(self):
 
@@ -112,10 +126,16 @@ class CreateUser:
 
         # Button
 
-        self.sign_btn = ttk.Button(text="Sign up!", command=self.get_user)
+        self.sign_btn = ttk.Button(text="Sign up!", command=self.get_user, state="disabled")
 
         self.sign_btn.grid(column=0, row=2, columnspan=2, pady=5)
 
+        # self.username = self.entry_username.get().lower()
+        # self.email = self.entry_email.get()
+        # self.password = self.entry_password.get()
+        # self.rep_pass = self.entry_rep_pass.get()
+
+        self.enable_button()
 
 if __name__ == "__main__":
     root = tk.Tk()
