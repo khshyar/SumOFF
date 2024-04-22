@@ -8,43 +8,81 @@ class CreateUser:
         self.root = root
         self.root.title("Create a new user!")
         self.root.geometry("250x180")
-        self.sql = SqlPy()
+        self.root.resizable(0, 0)
         self.ui_setup()
 
 
 # COMMANDS
 
     def check_validation(self):
-        letters_lower = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-        letters_upper = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-        numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-        symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
-        if len(self.password) >= 8:
-            if any(char in self.password for char in letters_lower) and any(char in self.password for char in letters_upper) and any(char in self.password for char in numbers) and any(char in self.password for char in symbols):
-                if self.password == self.rep_pass:
-                    return True
+        
+        letters_lower = set('abcdefghijklmnopqrstuvwxyz')
+        letters_upper = set('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+        numbers = set('0123456789')
+        symbols = set('!@#$%^&*()')
+        mail_val = set('@.')
+
+        contains_lower = any(char in self.password for char in letters_lower)
+        contains_upper = any(char in self.password for char in letters_upper)
+        contains_number = any(char in self.password for char in numbers)
+        contains_symbol = any(char in self.password for char in symbols)
+        contains_at = any(char in self.email for char in mail_val)
+
+        if len(self.username) >= 4:
+            if not any(char in self.username for char in symbols):
+                if len(self.email) >= 8:
+                    if contains_at:
+                        if len(self.password) >= 8:
+                            if contains_lower and contains_upper and contains_number and contains_symbol:
+                                if self.password == self.rep_pass:
+                                    return True
+                                else:
+                                    messagebox.showwarning(title="Error", message="Please make sure you entered your password twice correctly")
+                            else:
+                                messagebox.showwarning(title="Error", message="Please make sure you've put all symbols, lower-case, upper-case, numbers in your password!")
+                        else:
+                            messagebox.showwarning(title="Error", message="Please make sure the password you entered is equal or more than 8 characters!")
+                    else:
+                            messagebox.showwarning(title="Error", message="Please make sure you entered your Email Correctly!")
                 else:
-                    messagebox.showwarning(title="Error", message="Please make sure you entered your password twice correctly")
-            
+                    messagebox.showwarning(title="Error", message="Please make sure you entered your Email Correctly!")
             else:
-                messagebox.showwarning(title="Error", message="Please make sure you've put all symbols, lower-case, upper-case, numbers in your password!")
+                messagebox.showwarning(title="Error", message="Please make sure your username doesnt contain any special characters!")
         else:
-            messagebox.showwarning(title="Error", message="Please make sure the password you entered is equal or more than 8 characters!")
+            messagebox.showwarning(title="Error", message="Please make sure your username is more than 4 characters!")
+
+
                 
 
     def get_user(self):
 
+        sql = SqlPy()
+
+        if self.check_validation():
+
+            sql.push_db(self.email, self.username, self.password)
+
+            self.clear_entires()
+    
+
+    def enable_button(self):
+        # Get the current values from the entry fields
         self.username = self.entry_username.get()
         self.email = self.entry_email.get()
         self.password = self.entry_password.get()
         self.rep_pass = self.entry_rep_pass.get()
-
-        if self.check_validation():
-
-            self.sql.push_db(self.email, self.username, self.password)
-
-            self.clear_entires()
-
+        
+        # Check if all conditions are met to enable the button
+        if (len(self.password) > 7 and 
+            len(self.rep_pass) > 7 and 
+            len(self.username) > 7 and 
+            len(self.email) > 7):
+            self.sign_btn.config(state="normal")
+        else:
+            self.sign_btn.config(state="disabled")
+        
+        # Schedule the enable_button method to run again after 100 milliseconds
+        self.root.after(100, self.enable_button)
 
     def clear_entires(self):
 
@@ -55,6 +93,7 @@ class CreateUser:
 
 
     def ui_setup(self):
+        
         labels_frame = ttk.Frame(master=self.root)
         username_lbl = ttk.Label(master=labels_frame, text="Username:")
         email_lbl = ttk.Label(master=labels_frame, text="Email Address:")
@@ -87,10 +126,16 @@ class CreateUser:
 
         # Button
 
-        sign_btn = ttk.Button(text="Sign up!", command=self.get_user)
+        self.sign_btn = ttk.Button(text="Sign up!", command=self.get_user, state="disabled")
 
-        sign_btn.grid(column=0, row=2, columnspan=2, pady=5)
+        self.sign_btn.grid(column=0, row=2, columnspan=2, pady=5)
 
+        # self.username = self.entry_username.get().lower()
+        # self.email = self.entry_email.get()
+        # self.password = self.entry_password.get()
+        # self.rep_pass = self.entry_rep_pass.get()
+
+        self.enable_button()
 
 if __name__ == "__main__":
     root = tk.Tk()

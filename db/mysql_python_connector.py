@@ -31,7 +31,7 @@ class SqlPy:
     def push_db(self, email, username_data, password_data):
         
         try:
-            exists = self.user_exists(username=username, email=email)
+            exists = self.user_exists(username=username_data, email=email)
             if exists == 'username':
                 print("User with this username already exists")
                 return
@@ -40,7 +40,7 @@ class SqlPy:
                 return
         
             query = "INSERT INTO user (email, username, password) VALUES (%s, %s, %s)"
-            self.my_cursor.execute(query, (email, username, password))
+            self.my_cursor.execute(query, (email, username_data, password_data))
             self.conn.commit()
             print("User inserted successfully") 
         except mysql.connector.Error as err:
