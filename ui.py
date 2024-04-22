@@ -59,16 +59,22 @@ class CreateUser:
         sql = SqlPy()
 
         if self.check_validation():
+            if sql.user_exists(self.username, self.email) == "username":
+                messagebox.showerror(title="error", message="This Username alrady Exists!")
+            elif sql.user_exists(self.username, self.email) == "email":
+                messagebox.showerror(title="error", message="This Email alrady Exists!")
+            else:
+                sql.push_db(self.email, self.username, self.password)
 
-            sql.push_db(self.email, self.username, self.password)
+                messagebox.showinfo(title="Done", message="Sign up Completed!")
 
-            self.clear_entires()
+                self.clear_entires()
     
 
     def enable_button(self):
         # Get the current values from the entry fields
-        self.username = self.entry_username.get()
-        self.email = self.entry_email.get()
+        self.username = self.entry_username.get().lower()
+        self.email = self.entry_email.get().lower()
         self.password = self.entry_password.get()
         self.rep_pass = self.entry_rep_pass.get()
         
