@@ -7,7 +7,7 @@ class CreateUser:
     def __init__(self, root):
         self.root = root
         self.root.title("Create a new user!")
-        self.root.geometry("250x180")
+        self.root.geometry("250x200")
         self.root.resizable(0, 0)
         self.ui_setup()
 
@@ -81,7 +81,7 @@ class CreateUser:
         # Check if all conditions are met to enable the button
         if (len(self.password) > 7 and 
             len(self.rep_pass) > 7 and 
-            len(self.username) > 7 and 
+            len(self.username) > 4 and 
             len(self.email) > 7):
             self.sign_btn.config(state="normal")
         else:
@@ -96,6 +96,14 @@ class CreateUser:
         self.entry_email.delete(0, "end")
         self.entry_password.delete(0, "end")
         self.entry_rep_pass.delete(0, "end")
+
+    def checked(self):
+        if self.on_or_off.get() == True:
+            self.entry_password.config(show="")
+            self.entry_rep_pass.config(show="")
+        else:
+            self.entry_password.config(show="*")
+            self.entry_rep_pass.config(show="*")
 
 
     def ui_setup(self):
@@ -122,19 +130,22 @@ class CreateUser:
         self.entry_username = ttk.Entry(master=entry_frame)
         self.entry_username.focus()
         self.entry_email = ttk.Entry(master=entry_frame)
-        self.entry_password = ttk.Entry(master=entry_frame)
-        self.entry_rep_pass = ttk.Entry(master=entry_frame)
+        self.entry_password = ttk.Entry(master=entry_frame, show="*")
+        self.entry_rep_pass = ttk.Entry(master=entry_frame, show="*")
 
-        self.entry_username.grid(column=0, row=0, sticky="W", pady=5)
+        self.entry_username.grid(column=0, row=0, sticky="W", pady=10)
         self.entry_email.grid(column=0, row=1, sticky="W", pady=5)
         self.entry_password.grid(column=0, row=2, sticky="W", pady=5)
         self.entry_rep_pass.grid(column=0, row=3, sticky="W", pady=5)
 
+        #Checkbox
+        self.on_or_off = tk.BooleanVar()
+        pass_checkbox = ttk.Checkbutton(text="Show password",variable=self.on_or_off, command=self.checked, state='!alternate')
+        pass_checkbox.grid(column=0, row=2, columnspan=2, padx=5, sticky="W")
+
         # Button
-
         self.sign_btn = ttk.Button(text="Sign up!", command=self.get_user, state="disabled")
-
-        self.sign_btn.grid(column=0, row=2, columnspan=2, pady=5)
+        self.sign_btn.grid(column=0, row=3, columnspan=2, pady=8)
 
         # self.username = self.entry_username.get().lower()
         # self.email = self.entry_email.get()
