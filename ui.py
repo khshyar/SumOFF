@@ -81,7 +81,7 @@ class CreateUser:
         # Check if all conditions are met to enable the button
         if (len(self.password) > 7 and 
             len(self.rep_pass) > 7 and 
-            len(self.username) > 7 and 
+            len(self.username) > 4 and 
             len(self.email) > 7):
             self.sign_btn.config(state="normal")
         else:
@@ -100,10 +100,10 @@ class CreateUser:
     def checked(self):
         if self.on_or_off.get() == True:
             self.entry_password.config(show="")
-            self.rep_pass.config(show="")
+            self.entry_rep_pass.config(show="")
         else:
             self.entry_password.config(show="*")
-            self.rep_pass.config(show="*")
+            self.entry_rep_pass.config(show="*")
 
 
     def ui_setup(self):
@@ -133,7 +133,7 @@ class CreateUser:
         self.entry_password = ttk.Entry(master=entry_frame, show="*")
         self.entry_rep_pass = ttk.Entry(master=entry_frame, show="*")
 
-        self.entry_username.grid(column=0, row=0, sticky="W", pady=5)
+        self.entry_username.grid(column=0, row=0, sticky="W", pady=10)
         self.entry_email.grid(column=0, row=1, sticky="W", pady=5)
         self.entry_password.grid(column=0, row=2, sticky="W", pady=5)
         self.entry_rep_pass.grid(column=0, row=3, sticky="W", pady=5)
