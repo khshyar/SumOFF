@@ -143,7 +143,7 @@ class CreateUser:
         pass_checkbox = ttk.Checkbutton(text="Show password",variable=self.on_or_off, command=self.checked, state='!alternate')
         pass_checkbox.grid(column=0, row=2, columnspan=2, padx=5, sticky="W")
 
-        # Butto
+        # Button
         self.sign_btn = ttk.Button(text="Sign up!", command=self.get_user, state="disabled")
         self.sign_btn.grid(column=0, row=3, columnspan=2, pady=8)
 
