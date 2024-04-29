@@ -71,6 +71,13 @@ class CreateUser:
                 self.clear_entires()
     
 
+    def get_user_data(self):
+        self.username = self.entry_username.get().lower()
+        self.email = self.entry_email.get().lower()
+        self.password = self.entry_password.get()
+        self.rep_pass = self.entry_rep_pass.get()
+
+
     def enable_button(self):
         # Get the current values from the entry fields
         self.username = self.entry_username.get().lower()
@@ -88,7 +95,7 @@ class CreateUser:
             self.sign_btn.config(state="disabled")
         
         # Schedule the enable_button method to run again after 100 milliseconds
-        self.root.after(100, self.enable_button)
+        self.root.after(100, self.get_user_data)
 
     def clear_entires(self):
 
