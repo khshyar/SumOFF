@@ -56,8 +56,12 @@ for product in products:
     except Exception as e:
         print("Couldnt extract a product", e)
 
+current_date = datetime.now().strftime("%d-%m-%Y")
+filename = f"edeka_products_{current_date}.csv"
 
-with open(f"../../../csv_files/edeka/{filename}", "w", newline="") as file:
+csv_path = "E:/Coding/VSCode/SumOFF/csv_files/edeka"
+
+with open(f"{csv_path}/{filename}", "w", newline="") as file:
     fieldnames = ["name", "price", "image"]
     writer = csv.DictWriter(file, fieldnames=fieldnames)
 
