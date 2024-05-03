@@ -60,9 +60,9 @@ class CreateUser:
 
         if self.check_validation():
             if sql.user_exists(self.username, self.email) == "username":
-                messagebox.showerror(title="error", message="This Username alrady Exists!")
+                messagebox.showerror(title="error", message="This Username already Exists!")
             elif sql.user_exists(self.username, self.email) == "email":
-                messagebox.showerror(title="error", message="This Email alrady Exists!")
+                messagebox.showerror(title="error", message="This Email already Exists!")
             else:
                 sql.push_db(self.email, self.username, self.password)
 
@@ -95,7 +95,7 @@ class CreateUser:
             self.sign_btn.config(state="disabled")
         
         # Schedule the enable_button method to run again after 100 milliseconds
-        self.root.after(100, self.get_user_data)
+        self.root.after(100, self.enable_button)
 
     def clear_entires(self):
 
