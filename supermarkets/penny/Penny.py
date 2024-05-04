@@ -1,13 +1,13 @@
 import constants as c
 import os
-from datetime import date
+from datetime import datetime, timedelta
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from categories_finder import Categories
-
+from products import Product
 options = Options()
 options.add_experimental_option("detach", True)
 
@@ -17,7 +17,7 @@ class Penny(webdriver.Chrome):
         self.driver_path = driver_path
         os.environ["PATH"] += self.driver_path
         super(Penny, self).__init__(options=options)
-        self.implicitly_wait(20)
+        self.implicitly_wait(0.01)
 
     def landing_page(self):
         self.get(c.URL)
@@ -33,27 +33,22 @@ class Penny(webdriver.Chrome):
         )
         cookies_accept.click()
 
-    def get_offers_date(self):
-        today = date.today()
-        today_year = today.strftime("%Y")
 
-        date_wrapper = self.find_element(By.CSS_SELECTOR, ".category-menu")
-        date_element = date_wrapper.find_element(By.CSS_SELECTOR, ".active")
-        offer_dates = date_element.get_attribute("data-startend")
-        dates_list = [f"{dates.replace('.','/')}{today_year}"for dates in offer_dates.split(" - ")]
-        return dates_list
 
     def get_offers_categories(self):
         categories = Categories(driver=self)
-        categories.find_categories()
+        cat_ids = categories.category_id_finder()
+        cat_ids_list = categories.categories_ids_list(cat_ids)
+        return cat_ids_list
 
-    def get_products_details(self, category=None):
-        pass
+    def get_products_details(self, category):
+        products = Product(driver=self)
+        return products.products_data_export(category)
 
 
 if __name__ == "__main__":
     ins = Penny()
     ins.landing_page()
     ins.accept_cookies()
-    ins.get_offers_date()
-    ins.get_offers_categories()
+    categories_list = ins.get_offers_categories()
+    print(ins.get_products_details(categories_list))
